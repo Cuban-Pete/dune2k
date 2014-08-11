@@ -40,25 +40,23 @@ DLL_LDFLAGS ?= $(LD_COMMON) -s -shared -Wl,--strip-all -Wl,--exclude-all-symbols
 .$(GAME).dll: $(DLL_OBJS)
 	$(CC) $(DLL_LDFLAGS) -o $@ $(DLL_OBJS) $(DLL_LIBS)
 
-.import-%: %
-	$(CP) $< $@
-	$(PETOOL) setdd $@ $(IMPORT)
+protect/%: .%
+	$(CP) $< $*
 
-.vsize-%: %
-	$(CP) $< $@
-	$(PETOOL) setvs $@ $(VSIZE)
+import/%: %
+	$(PETOOL) setdd $(*F) $(IMPORT)
 
-.patch-%: %
-	$(CP) $< $@
-	-$(PETOOL) patch $@
+vsize/%: %
+	$(PETOOL) setvs $(*F) $(VSIZE)
 
-.strip-%: %
-	$(CP) $< $@
-	$(STRIP) -R .patch $@
+patch/%: %
+	-$(PETOOL) patch $(*F)
 
-.dump-%: %
-	$(CP) $< $@
-	$(PETOOL) dump $@
+strip/%: %
+	$(STRIP) -R .patch $(*F)
+
+dump/%: %
+	$(PETOOL) dump $(*F)
 
 %.o: %.cpp
 	$(CXX)  $(CXXFLAGS) -c -o $@ $<
