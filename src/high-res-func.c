@@ -94,7 +94,7 @@ void MakeCustomUIBB(char *UIBBR16Name)
 		//####################### TOP BAR ####################### 
 		//Top bar copy
 		unsigned short * TopBar;
-		TopBar = (unsigned short*) calloc (20*305*10, sizeof(unsigned short));
+		TopBar = (unsigned short*) calloc (20*305, sizeof(unsigned short));
 		p = 0;
 		k = 71; //jump over options button
 		for (int i = 0; i < 20; ++i)
@@ -114,7 +114,8 @@ void MakeCustomUIBB(char *UIBBR16Name)
 			int tj = 0;
 			for (int j = 0; j < GameWidth-640+71; ++j) //+71 to remove 'old' options button
 			{
-				HighResUIBB[p+j] = TopBar[k+j-tj*305];
+				if (j!=0 && j%305==0) ++tj;
+				HighResUIBB[p+j] = TopBar[k+j-tj*305];				
 			}
 			p = p + GameWidth;
 			k = k + 305;
